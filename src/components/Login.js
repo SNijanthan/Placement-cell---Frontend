@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("nijanthan378@gmail.com");
-  const [password, setPassword] = useState("Mern@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -35,9 +35,7 @@ const Login = () => {
       <div className="hero min-h-screen bg-gray-200">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl -mt-28">
           <form className="card-body bg-slate-800 rounded-lg">
-            <h1 className="text-center text-2xl font-medium text-violet-500">
-              LOGIN
-            </h1>
+            <h1 className=" text-2xl font-thin text-violet-500">LOGIN</h1>
 
             <div className="form-control">
               <label className="label">

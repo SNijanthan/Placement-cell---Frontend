@@ -1,53 +1,97 @@
+import axios from "axios";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
+import { removeUser } from "../utils/userSlice";
 
 const Header = () => {
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        BASE_URL + "/api/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeUser());
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Make the GET request to download the file
+      const response = await axios.get(BASE_URL + "/api/results/download", {
+        responseType: "blob", // Required to handle file download
+        withCredentials: true,
+      });
+
+      // Create a Blob from the response data
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      // Create a URL for the blob and trigger a download
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "results.xlsx"); // Define the file name
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the link element
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error while downloading the file:", error);
+    }
+  };
+
   return (
     <>
-      <div className="navbar bg-gray-300">
-        <div className="navbar-start">
+      {user ? (
+        <div className="navbar bg-gray-300">
+          <div className="flex-1">
+            <p className="btn btn-ghost text-xl">daisyUI</p>
+          </div>
           <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h7"
-                />
-              </svg>
+            <div tabIndex={0} role="button" className="btn m-1 mr-28">
+              Options
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="dropdown-content mt-6 menu bg-base-300 rounded-box z-[1] w-44 p-2 shadow"
             >
               <li>
-                <a>Homepage</a>
+                <a>Add Students</a>
               </li>
               <li>
-                <a>Portfolio</a>
+                <a>Add Interview</a>
               </li>
               <li>
-                <a>About</a>
+                <p onClick={handleDownload}>Download Report</p>
+              </li>
+              <li>
+                <p onClick={handleLogout}>Logout</p>
               </li>
             </ul>
           </div>
         </div>
-        <div className="navbar-center">
-          <p className="btn btn-ghost text-xl text-violet-600 font-bold -ml-20">
-            Placement Cell
-          </p>
+      ) : (
+        <div className="navbar bg-gray-300">
+          <div className="navbar-start"></div>
+          <div className="navbar-center">
+            <p className="btn btn-ghost text-xl text-violet-600 font-bold -ml-20">
+              Placement Cell
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

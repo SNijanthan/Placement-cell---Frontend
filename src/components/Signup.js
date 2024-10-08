@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Doe");
-  const [email, setEmail] = useState("john@gmail.com");
-  const [password, setPassword] = useState("123");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -39,13 +39,15 @@ const Signup = () => {
   return (
     <>
       <div className=" flex items-center justify-center mt-10">
-        <div className="card bg-base-200 w-96 shadow-xl ">
-          <div className="card-body">
-            <h2 className="card-title">Signup Form</h2>
+        <div className="card w-96 shadow-xl bg-slate-800">
+          <div className="card-body text-center">
+            <h2 className="card-title text-2xl font-thin text-violet-500">
+              Signup Form
+            </h2>
             <div className="card-actions justify-center">
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">First Name</span>
+                  <span className="label-text text-white">First Name</span>
                 </div>
                 <input
                   type="text"
@@ -56,7 +58,7 @@ const Signup = () => {
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">Last Name</span>
+                  <span className="label-text text-white">Last Name</span>
                 </div>
                 <input
                   type="text"
@@ -67,7 +69,7 @@ const Signup = () => {
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text text-white">Email</span>
                 </div>
                 <input
                   type="text"
@@ -78,7 +80,7 @@ const Signup = () => {
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">Password</span>
+                  <span className="label-text text-white">Password</span>
                 </div>
                 <input
                   type="password"
