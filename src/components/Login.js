@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("nijanthan378@gmail.com");
@@ -9,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,10 +21,10 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      console.log(result);
-      if (result.status === 200) {
-        navigate("/");
-      }
+      console.log(result?.data?.data);
+      if (!result.status === 200) return;
+      dispatch(addUser(result?.data?.data));
+      navigate("/");
     } catch (error) {
       console.log(error);
       setError(error?.response?.data?.error);
